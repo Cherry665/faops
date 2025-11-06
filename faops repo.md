@@ -1120,8 +1120,10 @@ fi
 ```
 
 # 09-split-name.bats  
+
 ## bats代码①:
-```
+
+```bash
 @test "split-name: all sequences" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1134,9 +1136,12 @@ fi
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码①:
+
 建立临时目录，将 ufasta.fa 文件中的多个序列按序列名拆分成多个单序列文件  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops split-name ufasta.fa $mytmpdir
@@ -1150,8 +1155,10 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "split-name: size restrict" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1165,9 +1172,12 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码②:
+
 建立临时目录，将 ufasta.fa 文件中长度≥10的多个序列按序列名拆分成多个单序列文件
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops filter -a 10 ufasta.fa stdout | faops split-name stdin $mytmpdir
@@ -1181,9 +1191,12 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 # 10-split-about.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "split-about: 2000 bp " {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1196,9 +1209,12 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码①:
+
 建立临时目录，利用`faops split-about ufasta.fa 2000 $mytmpdir`将 ufasta.fa 文件按每个 2000bp（约等于）拆分成多个包含几个序列的文件（单个序列不会被拆分），输出文件名为000.fa、001.fa......  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops split-about ufasta.fa 2000 $mytmpdir
@@ -1212,8 +1228,10 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "split-about: max parts" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1226,10 +1244,13 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码②:
+
 建立临时目录，将 ufasta.fa 文件按每个 2000bp（约等于）拆分成多个包含几个序列的文件（单个序列不会被拆分）  
 • `-m 2`会限制最多拆分文件数量为2，这样每个文件的碱基数量就不是2000，会根据最大文件数量进行调整  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops split-about -m 2 ufasta.fa 2000 $mytmpdir
@@ -1243,8 +1264,10 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "split-about: 2000 bp and size restrict" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1258,9 +1281,12 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码③:
+
 先利用`faops filter -a 100`过滤出长度≥100的序列，再利用`faops split-about`将过滤得到的序列按每个 2000bp 拆分成多个文件  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops filter -a 100 ufasta.fa stdout | faops split-about stdin 2000 $mytmpdir
@@ -1274,8 +1300,10 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "split-about: 1 bp" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1288,9 +1316,12 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码④:
+
 利用`faops split-about`将 ufasta.fa 中的序列按每个 1bp 拆分成多个文件，由于每条序列不会被拆分，所以相当于按序列名拆分  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops split-about ufasta.fa 1 $mytmpdir
@@ -1304,8 +1335,10 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 ## bats代码⑤:
-```
+
+```bash
 @test "split-about: 1 bp even" {
     mytmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
@@ -1318,9 +1351,12 @@ rm -fr $mytmpdir
     rm -fr ${mytmpdir}
 }
 ```
+
 ## 可以运行的bash代码⑤:
+
 利用`split-about -e`可以实现均匀拆分，将序列均匀分配到固定数量的文件中（总序列数/2）  
-```
+
+```bash
 cd $HOME/faops/test
 mytmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
 faops split-about -e ufasta.fa 1 $mytmpdir
@@ -1334,158 +1370,210 @@ file_count=$(find $mytmpdir -name '*.fa' | wc -l | xargs echo)
 echo "$file_count"
 rm -fr $mytmpdir
 ```
+
 # 11-n50.bats  
+
 ## bats代码①:
-```
+
+```bash
 @test "n50: display header" {
     run bash -c "$BATS_TEST_DIRNAME/../faops n50 $BATS_TEST_DIRNAME/ufasta.fa"
     assert_equal "N50${tab}314" "${lines[0]}"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops n50`可以计算 fasta 文件的 N50 的值，直接按“N50  N50值”格式输出  
 N50：将所有序列按长度排序后，从长到短进行累计，累计长度达到实际组装总长度50%时的序列长度，值越大说明组装质量越好（长序列越多）  
-```
+
+```bash
 cd $HOME/faops/test
 N50=$(faops n50 ufasta.fa)
 echo "$N50"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "n50: don't display header" {
     run $BATS_TEST_DIRNAME/../faops n50 -H $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "314" "${output}"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 `faops n50 -H`可以直接输出 N50 的值，没有表头  
-```
+
+```bash
 cd $HOME/faops/test
 N50=$(faops n50 -H ufasta.fa | xargs echo)
 echo "$N50"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "n50: set genome size (NG50)" {
     run $BATS_TEST_DIRNAME/../faops n50 -H -g 10000 $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "297" "${output}"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 `faops n50 -H -g 10000`可以根据已知或预计基因组大小（如10000bp），计算 NG50 的值  
 NG50：根据已知或预计基因组大小计算，是 N50 的变体  
-```
+
+```bash
 cd $HOME/faops/test
 N50=$(faops n50 -H -g 10000 ufasta.fa | xargs echo)
 echo "$N50"
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "n50: sum of size" {
     run $BATS_TEST_DIRNAME/../faops n50 -H -S $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "314 9317" "${output}"
 }
 ```
+
 ## 可以运行的bash代码④:
-利用`faops n50 -H -S`不仅可以计算 N50 的值，还可以计算序列的总长度（size）  
-```
+
+利用`faops n50 -H -S`不仅可以计算 N50 的值，还可以计算序列的总长度（size）
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -H -S ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 ## bats代码⑤:
-```
+
+```bash
 @test "n50: sum and average of size" {
     run $BATS_TEST_DIRNAME/../faops n50 -H -S -A $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "314 9317 186.34" "${output}"
 }
 ```
+
 ## 可以运行的bash代码⑤:
+
 利用`faops n50 -H -S -A`不仅可以计算 N50 的值，还可以计算序列的总长度（size）和平均每条序列的长度（average）  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -H -S -A ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 ## bats代码⑥:
-```
+
+```bash
 @test "n50: E-size" {
     run $BATS_TEST_DIRNAME/../faops n50 -H -E $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "314 314.70" "${output}"
 }
 ```
+
 ## 可以运行的bash代码⑥:
+
 利用`faops n50 -H -E`不仅可以计算 N50 的值，还可以计算 E-size 的值  
 E-size：是另一个组装质量指标，表示随机选择一个碱基时，它所在序列的期望长度（计算公式：∑(序列长度²) / 总碱基数），强调长序列的贡献，对长序列更敏感  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -H -E ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 ## bats代码⑦:
-```
+
+```bash
 @test "n50: n10" {
     run $BATS_TEST_DIRNAME/../faops n50 -H -N 10 $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "516" "${output}"
 }
 ```
+
 ## 可以运行的bash代码⑦:
+
 利用`faops n50 -H -N 10`可以计算 N10 的值  
 N10：将所有序列按长度排序后，累计长度达到总长度10%时的序列长度，相比N50更关注最长的那部分序列  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -H -N 10 ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 ## bats代码⑧:
-```
+
+```bash
 @test "n50: n90 with header" {
     run $BATS_TEST_DIRNAME/../faops n50 -N 90 $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "N90 112" "${output}"
 }
 ```
+
 ## 可以运行的bash代码⑧:
+
 利用`faops n50 -N 90`可以计算 N90 的值，显示表头  
 N90：将所有序列按长度排序后，累计长度达到总长度90%时的序列长度，反映较短序列的长度特征  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -N 90 ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 ## bats代码⑨:
-```
+
+```bash
 @test "n50: only count of sequences" {
     run $BATS_TEST_DIRNAME/../faops n50 -N 0 -C $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | xargs echo "
     assert_equal "C 50" "${output}"
 }
 ```
+
 ## 可以运行的bash代码⑨:
+
 `faops n50 -N 0 -C`中`-N 0`表示不进行N统计计算，`-C` 只统计序列的数量  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops n50 -N 0 -C ufasta.fa | xargs echo)
 echo "$res"
 ```
+
 # 12-order.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "order: inline names" {
     exp=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -A 1 '^>read12')
     res=$($BATS_TEST_DIRNAME/../faops order -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read12) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops order -l 0`提取 fasta 文件中的指定序列  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter -l 0 ufasta.fa stdout | grep -A 1 '^>read12')
 res=$(faops order -l 0 ufasta.fa <(echo read12) stdout)
@@ -1495,8 +1583,10 @@ else
    echo "Failed"
 fi
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "order: correct orders" {
     exp=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -A 1 '^>read12')
     exp+=$'\n'
@@ -1505,9 +1595,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 利用`faops order -l 0`加`<(echo read12 read5)`可以按指定顺序提取相应序列（如先 read12 后 read5）  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter -l 0 ufasta.fa stdout | grep -A 1 '^>read12')    
 exp+=$'\n'    
@@ -1519,8 +1612,10 @@ else
    echo "Failed"
 fi
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "order: compare with some" {
     exp=$($BATS_TEST_DIRNAME/../faops order $BATS_TEST_DIRNAME/ufasta.fa \
             <($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | sort -n -r -k2,2 | cut -f 1) \
@@ -1533,10 +1628,13 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 用`order`和`some`两种方法，结合`size`按序列长度从大到小的顺序提取全部序列  
 `order`可以直接一步提取，而`some`需要借助循环分布提取  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops order ufasta.fa <(faops size ufasta.fa | sort -n -r -k2,2 | cut -f 1) stdout )
 echo "$exp"
@@ -1548,9 +1646,12 @@ for word in $list; do
 done
 echo "$res"
 ```
+
 # 13-replace.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "replace: inline names" {
     exp=">428"
     res=$($BATS_TEST_DIRNAME/../faops replace $BATS_TEST_DIRNAME/ufasta.fa \
@@ -1559,16 +1660,21 @@ echo "$res"
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops replace`对指定序列名进行替换，输出全部序列  
-```
+
+```bash
 cd $HOME/faops/test
 exp=">428"    
 res=$(faops replace ufasta.fa <(printf "%s\t%s\n" read12 428) stdout | grep '^>428')
 echo "exp:$exp;res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "replace: -s" {
     exp="7"
     res=$($BATS_TEST_DIRNAME/../faops replace -s $BATS_TEST_DIRNAME/ufasta.fa \
@@ -1578,16 +1684,21 @@ echo "exp:$exp;res:$res"
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 利用`faops replace -s`只输出被替换的指定序列的描述行和序列信息  
-```
+
+```bash
 cd $HOME/faops/test
 exp="7"    
 res=$(faops replace -s ufasta.fa <(printf "%s\t%s\n" read12 428) stdout | wc -l | xargs echo)
 echo "exp:$exp;res:$res"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "replace: with replace.tsv" {
     exp=$(cat $BATS_TEST_DIRNAME/replace.tsv | cut -f 2)
     res=$($BATS_TEST_DIRNAME/../faops replace $BATS_TEST_DIRNAME/ufasta.fa \
@@ -1596,10 +1707,13 @@ echo "exp:$exp;res:$res"
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 借助映射文件 replace.tsv ，利用`faops replace`实现同时替换多条序列（只替换 replace.tsv 中提到的序列，其余不变）  
 `grep '^>'`找出所有描述行；`grep -v 'read'`去除所有含有 read 的未被替换的描述行；`sed 's/>//'`去除“>”只保留序列名  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(cat replace.tsv | cut -f 2)
 res=$(faops replace ufasta.fa replace.tsv stdout | grep '^>' | grep -v 'read' | sed 's/>//' )
@@ -1609,71 +1723,92 @@ else
    echo "Failed"
 fi
 ```
+
 # 14-dazz.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "dazz: empty seqs count" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | grep "\s0" | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops dazz -a $BATS_TEST_DIRNAME/ufasta.fa stdout | grep "0_0" | wc -l | xargs echo)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops size`和`faops dazz`都可以计算序列长度为 0 的序列的数量  
 `faops size`可以输出序列名+序列长度，`grep "\s0"`中 \s 可以匹配空白字符（空格、制表符等），grep "\s0" 可以匹配“空白字符+0”，即序列长度为 0 的行  
 `faops dazz -a ufasta.fa stdout`后描述行会以 “>read/x/0_y” 格式输出（序列信息也会输出），x 为序列的序数（即文件中的第几个序列），y 为序列的长度，“0_0”表示序列长度为 0  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa | grep "\s0" | wc -l | xargs echo)    
 res=$(faops dazz -a ufasta.fa stdout | grep "0_0" | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "dazz: deduplicate seqs" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/ufasta.fa.gz | grep "\s0" | wc -l | xargs echo)
     res=$(gzip -d -c -f $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/ufasta.fa.gz | $BATS_TEST_DIRNAME/../faops dazz stdin stdout | grep "0_0" | wc -l | xargs echo)
     assert_equal "$(($exp / 2))" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 `faops dazz`可以去重序列  
 `gzip -d -c -f`中 -d 表示解压缩；-c 表示写到标准输出； -f 表示强制执行  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa ufasta.fa.gz | grep "\s0" | wc -l | xargs echo)    
 res=$(gzip -d -c -f ufasta.fa ufasta.fa.gz | faops dazz stdin stdout | grep "0_0" | wc -l | xargs echo)
 echo "exp:$(($exp / 2))"
 echo "res:$res"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "dazz: duplicated seqs" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/ufasta.fa.gz | grep "\s0" | wc -l | xargs echo)
     res=$(gzip -d -c -f $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/ufasta.fa.gz | $BATS_TEST_DIRNAME/../faops dazz -a stdin stdout | grep "0_0" | wc -l | xargs echo)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 `faops dazz -a`不会进行去重，会保留所有的序列信息  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa ufasta.fa.gz | grep "\s0" | wc -l | xargs echo) 
 res=$(gzip -d -c -f ufasta.fa ufasta.fa.gz | faops dazz -a stdin stdout | grep "0_0" | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 # 15-interleave.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "interleave: empty seqs count" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | grep "\s0" | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops interleave $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/ufasta.fa.gz | grep "^$" | wc -l | xargs echo)
     assert_equal "$(($exp * 2))" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 `faops interleave`可以交错合并两个文件，总序列数会翻倍  
 输出为：  
 >read1/1  
@@ -1681,22 +1816,27 @@ echo "res:$res"
 >read1/2  
 序列信息  
 ......  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa | grep "\s0" | wc -l | xargs echo)    
 res=$(faops interleave ufasta.fa ufasta.fa.gz | grep "^$" | wc -l | xargs echo)
 echo "exp:$(($exp * 2))"
 echo "res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "interleave: empty seqs count (single)" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | grep "\s0" | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops interleave $BATS_TEST_DIRNAME/ufasta.fa | grep "^$" | wc -l | xargs echo)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 `faops interleave`可以交错合并两个文件，当只有一个文件时，会输出N  
 输出为：  
 >read1/1  
@@ -1704,15 +1844,18 @@ echo "res:$res"
 >read1/2  
 >N  
 ......  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa | grep "\s0" | wc -l | xargs echo)    
 res=$(faops interleave ufasta.fa | grep "^$" | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "interleave: fq" {
     run bash -c "
         $BATS_TEST_DIRNAME/../faops interleave -q $BATS_TEST_DIRNAME/R1.fq.gz $BATS_TEST_DIRNAME/R2.fq.gz |
@@ -1722,7 +1865,9 @@ echo "res:$res"
     assert_equal 0 "${output}"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 利用`faops interleave -q`交错合并两个 fastq 文件  
 输出为：  
 @read1/1  
@@ -1731,12 +1876,15 @@ echo "res:$res"
 序列及质量信息  
 ......  
 合并后不会产生无效的质量值，即包含单个感叹号 ! 的行  
-```
+
+```bash
 cd $HOME/faops/test
 faops interleave -q R1.fq.gz R2.fq.gz | grep '^!$' | wc -l
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "interleave: fq (single)" {
     run bash -c "
         $BATS_TEST_DIRNAME/../faops interleave -q $BATS_TEST_DIRNAME/R1.fq.gz |
@@ -1746,7 +1894,9 @@ faops interleave -q R1.fq.gz R2.fq.gz | grep '^!$' | wc -l
     assert_equal 25 "${output}"
 }
 ```
+
 ## 可以运行的bash代码④:
+
 利用`faops interleave -q`交错合并两个 fastq 文件,当只有一个文件时,系列质量会输出 !  
 输出为：  
 @read1/1  
@@ -1754,20 +1904,26 @@ faops interleave -q R1.fq.gz R2.fq.gz | grep '^!$' | wc -l
 @read1/2  
 N及!  
 ......  
-```
+
+```bash
 cd $HOME/faops/test
 faops interleave -q R1.fq.gz | grep '^!$' | wc -l
 ```
+
 # 16-region.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "region: from file" {
     exp=$(cat $BATS_TEST_DIRNAME/region.txt | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops region -l 0 $BATS_TEST_DIRNAME/ufasta.fa $BATS_TEST_DIRNAME/region.txt stdout | wc -l | xargs echo)
     assert_equal "$(($exp * 2))" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 借助 region.txt 文件可以从 ufasta.fa 文件中提取指定序列的指定位置的碱基  
 如：region.txt 中的内容为  
 read0:1-10  
@@ -1778,118 +1934,150 @@ read12:50-60
 tCGTTTAACC  
 >read12:50-60  
 TtgTgtcACag  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(cat region.txt | wc -l | xargs echo)    
 res=$(faops region -l 0 ufasta.fa region.txt stdout | wc -l | xargs echo)
 echo "exp:$(($exp * 2))"
 echo "res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "region: frag" {
     exp=$($BATS_TEST_DIRNAME/../faops frag $BATS_TEST_DIRNAME/ufasta.fa 1 10 stdout)
     res=$($BATS_TEST_DIRNAME/../faops region -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read0:1-10) stdout)
     assert_equal "${exp}" "${res}"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 利用`faops region -l 0`和`faops frag`都可以提取一条序列的指定位置的碱基  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops frag ufasta.fa 1 10 stdout)    
 res=$(faops region -l 0 ufasta.fa <(echo read0:1-10) stdout)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "region: 1 base" {
     exp=$($BATS_TEST_DIRNAME/../faops frag $BATS_TEST_DIRNAME/ufasta.fa 10 10 stdout)
     res=$($BATS_TEST_DIRNAME/../faops region -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read0:10) stdout)
     assert_equal "${exp}" "${res}"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 利用`faops region -l 0`和`faops frag`都可以提取一条序列的指定位置的 1 个碱基  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops frag ufasta.fa 10 10 stdout)    
 res=$(faops region -l 0 ufasta.fa <(echo read0:10) stdout)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "region: strand" {
     exp=$(echo -e ">read0(+):10\nC")
     res=$($BATS_TEST_DIRNAME/../faops region -s -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read0:10) stdout)
     assert_equal "${exp}" "${res}"
 }
 ```
+
 ## 可以运行的bash代码④:
+
 利用`faops region -s -l 0`可以提取一条序列的指定位置的碱基，`-s`启用链向处理，提取正链序列  
 输出为  
 >read0(+):10  
 C  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(echo -e ">read0(+):10\nC")    
 res=$(faops region -s -l 0 ufasta.fa <(echo read0:10) stdout)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码⑤:
-```
+
+```bash
 @test "region: regions" {
     exp=4
     res=$($BATS_TEST_DIRNAME/../faops region -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read1:1-10,50-60) stdout | wc -l | xargs echo)
     assert_equal "${exp}" "${res}"
 }
 ```
+
 ## 可以运行的bash代码④:
+
 利用`faops region -l 0`可以同时提取一条序列的不同位置的碱基  
 输出为  
 >read1:1-10  
 taGGCGcGGg  
 >read1:50-60  
 TacgtaACatc  
-```
+
+```bash
 cd $HOME/faops/test
 exp=4    
 res=$(faops region -l 0 ufasta.fa <(echo read1:1-10,50-60) stdout | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 # 17-masked.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "masked 1" {
     exp="read46:3-4"
     res=$($BATS_TEST_DIRNAME/../faops masked $BATS_TEST_DIRNAME/ufasta.fa | grep '^read46' | head -n 1)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops masked`可以显示所有序列所有被 masked 的位置（小写字母）  
-```
+
+```bash
 cd $HOME/faops/test
 exp="read46:3-4"
 res=$(faops masked ufasta.fa | grep '^read46' | head -n 1)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "masked 2" {
     exp="read0:1"
     res=$($BATS_TEST_DIRNAME/../faops masked $BATS_TEST_DIRNAME/ufasta.fa | grep '^read0' | head -n 1)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 利用`faops masked`可以显示所有序列所有被 masked 的位置（小写字母），同 ①  
-```
+
+```bash
 cd $HOME/faops/test
 exp="read0:1"    
 res=$(faops masked ufasta.fa | grep '^read0' | head -n 1)
