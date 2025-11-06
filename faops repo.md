@@ -1810,12 +1810,15 @@ echo "res:$res"
 ## 可以运行的bash代码①:
 
 `faops interleave`可以交错合并两个文件，总序列数会翻倍  
-输出为：  
+输出为： 
+
+``` 
 >read1/1  
 序列信息  
 >read1/2  
 序列信息  
 ......  
+```
 
 ```bash
 cd $HOME/faops/test
