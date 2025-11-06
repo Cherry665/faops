@@ -2,7 +2,7 @@
 
 ## bats代码①:  
 
-```bats
+```bash
 @test "run faops" {  
     run $BATS_TEST_DIRNAME/../faops help  
     assert_success  
@@ -19,7 +19,7 @@ faops help && echo "Success" || echo "Failed"
 
 ## bats代码②:  
 
-```bats
+```bash
 @test "help: contents" {
     run $BATS_TEST_DIRNAME/../faops help
     echo "${output}" | grep "Usage"
@@ -42,7 +42,7 @@ fi
 
 ## bats代码③:  
 
-```bats
+```bash
 @test "help: lines of contents" {
     run $BATS_TEST_DIRNAME/../faops help
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
@@ -68,7 +68,7 @@ fi
 
 ## bats代码①:  
 
-```bats
+```bash
 @test "count: read from file" {
     run bash -c "$BATS_TEST_DIRNAME/../faops count $BATS_TEST_DIRNAME/ufasta.fa | head -n 2"
     assert_equal "#seq${tab}len${tab}A${tab}C${tab}G${tab}T${tab}N" "${lines[0]}"
@@ -88,7 +88,7 @@ faops count ufasta.fa | head -n 2
 
 ## bats代码②: 
 
-```bats
+```bash
 @test "count: read from gzipped file" {
     run bash -c "$BATS_TEST_DIRNAME/../faops count $BATS_TEST_DIRNAME/ufasta.fa.gz | head -n 2"
     assert_equal "#seq${tab}len${tab}A${tab}C${tab}G${tab}T${tab}N" "${lines[0]}"
@@ -108,7 +108,7 @@ faops count ufasta.fa.gz | head -n 2
 
 ## bats代码③:
 
-```bats
+```bash
 @test "count: read from stdin" {
     run bash -c "cat $BATS_TEST_DIRNAME/ufasta.fa | $BATS_TEST_DIRNAME/../faops count stdin | head -n 2"
     assert_equal "#seq${tab}len${tab}A${tab}C${tab}G${tab}T${tab}N" "${lines[0]}"
@@ -127,7 +127,7 @@ cat ufasta.fa | faops count stdin | head -n 2
 
 ## bats代码④:
 
-```bats
+```bash
 @test "count: lines of result" {
     run $BATS_TEST_DIRNAME/../faops count $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
@@ -148,7 +148,7 @@ echo "line_count:$line_count"
 
 ## bats代码⑤:
 
-```bats
+```bash
 @test "count: mixture of stdin and actual file" {
     run bash -c "cat $BATS_TEST_DIRNAME/ufasta.fa | $BATS_TEST_DIRNAME/../faops count stdin $BATS_TEST_DIRNAME/ufasta.fa"
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
@@ -171,7 +171,7 @@ echo "line_count:$line_count"
 
 ## bats代码⑥:
 
-```bats
+```bash
 @test "count: sum of sizes" {
     run bash -c "
         $BATS_TEST_DIRNAME/../faops count $BATS_TEST_DIRNAME/ufasta.fa \
@@ -199,7 +199,7 @@ echo "total:$total"
 
 ## bats代码⑦:
 
-```bats
+```bash
 @test "faCount: without cpg" {
     if ! hash faCount 2>/dev/null ; then
         skip "Can't find faCount"
@@ -239,7 +239,7 @@ fi
 
 ## bats代码①:
 
-```bats
+```bash
 @test "size: read from file" {
     run bash -c "$BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | head -n 2"
     assert_equal "read0${tab}359" "${lines[0]}"
@@ -258,7 +258,7 @@ faops size ufasta.fa | head -n 2
 
 ## bats代码②:
 
-```bats
+```bash
 @test "size: read from gzipped file" {
     run bash -c "$BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa.gz | head -n 2"
     assert_equal "read0${tab}359" "${lines[0]}"
@@ -277,7 +277,7 @@ faops size ufasta.fa.gz | head -n 2
 
 ## bats代码③:
 
-```bats
+```bash
 @test "size: read from stdin" {
     run bash -c "cat $BATS_TEST_DIRNAME/ufasta.fa | $BATS_TEST_DIRNAME/../faops size stdin | head -n 2"
     assert_equal "read0${tab}359" "${lines[0]}"
@@ -295,7 +295,7 @@ cat ufasta.fa | faops size stdin | head -n 2
 ```
 ## bats代码④:
 
-```bats
+```bash
 @test "size: lines of result" {
     run $BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
@@ -315,7 +315,7 @@ echo "line_count:$line_count"
 
 ## bats代码⑤:
 
-```bats
+```bash
 @test "size: mixture of stdin and actual file" {
     run bash -c "cat $BATS_TEST_DIRNAME/ufasta.fa | $BATS_TEST_DIRNAME/../faops size stdin $BATS_TEST_DIRNAME/ufasta.fa"
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
@@ -335,7 +335,7 @@ echo "line_count:$line_count"
 
 ## bats代码⑥:
 
-```bats
+```bash
 @test "size: sum of sizes" {
     run bash -c "
         $BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa \
@@ -361,22 +361,29 @@ echo "total:$total"
 ```
 
 # 04-frag.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "frag: from first sequence" {
     res=$($BATS_TEST_DIRNAME/../faops frag $BATS_TEST_DIRNAME/ufasta.fa 1 10 stdout | grep -v "^>")
     assert_equal "tCGTTTAACC" "${res}"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 `frag`可以提取 ufasta.fa 文件中的序列片段，提取第 1-10 个碱基。`grep -v "^>"`可以删除以“>”开头的行，即描述行  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops frag ufasta.fa 1 10 stdout | grep -v "^>")
 echo "The extracted sequence is:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "frag: from specified sequence" {
     res=$($BATS_TEST_DIRNAME/../faops some $BATS_TEST_DIRNAME/ufasta.fa <(echo read12) stdout \
         | $BATS_TEST_DIRNAME/../faops frag stdin 1 10 stdout \
@@ -384,17 +391,23 @@ echo "The extracted sequence is:$res"
     assert_equal "AGCgCcccaa" "${res}"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 `some`可以提取指定序列，`<(echo read12)`提供序列名为 read12 的序列，输出到 stdout  
 `frag`可以从 stdin 中提取第 1-10 个碱基，输出到 stdout  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops some ufasta.fa <(echo read12) stdout | faops frag stdin 1 10 stdout | grep -v "^>")
 echo "The extracted sequence is:$res"
 ```
+
 # 05-rc.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "rc: output same length" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa)
     res=$($BATS_TEST_DIRNAME/../faops rc -n $BATS_TEST_DIRNAME/ufasta.fa stdout \
@@ -402,9 +415,12 @@ echo "The extracted sequence is:$res"
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 可以验证利用`faops rc -n`得到的反向互补序列与原始序列长度相等
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa)
 res=$(faops rc -n ufasta.fa stdout | faops size stdin)
@@ -416,8 +432,10 @@ else
    echo "The length of the reverse complementary sequence is unequal to the original sequence"
 fi
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "rc: double rc" {
     exp=$($BATS_TEST_DIRNAME/../faops filter $BATS_TEST_DIRNAME/ufasta.fa stdout)
     res=$($BATS_TEST_DIRNAME/../faops rc -n $BATS_TEST_DIRNAME/ufasta.fa stdout \
@@ -425,10 +443,13 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 验证双重反向互补操作会恢复原始序列（fa文件）  
-`faops filter`用来清理数据格式？  
-```
+`faops filter`用来清理数据格式  
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter ufasta.fa stdout)    
 res=$(faops rc -n ufasta.fa stdout | faops rc -n stdin stdout)
@@ -438,8 +459,10 @@ else
    echo "The length of the double reverse complementary sequence is unequal to the original sequence"
 fi
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "rc: double rc (gz)" {
     exp=$($BATS_TEST_DIRNAME/../faops filter $BATS_TEST_DIRNAME/ufasta.fa stdout)
     res=$($BATS_TEST_DIRNAME/../faops rc -n $BATS_TEST_DIRNAME/ufasta.fa.gz stdout \
@@ -447,9 +470,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 验证双重反向互补操作会恢复原始序列（fa.gz文件）  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter ufasta.fa stdout)    
 res=$(faops rc -n ufasta.fa.gz stdout | faops rc -n stdin stdout)
@@ -459,8 +485,10 @@ else
    echo "The length of the double reverse complementary sequence is unequal to the original sequence"
 fi
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "rc: perl regex" {
     paste <($BATS_TEST_DIRNAME/../faops rc -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -v '^>') \
         <($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -v '^>') \
@@ -473,7 +501,9 @@ fi
     assert_success
 }
 ```
+
 ## 可以运行的bash代码④:
+
 利用perl验证`rc -l`反向互补的正确性  
 • `rc -l 0`可以生成反向互补序列，且无长度限制  
 • `paste`可以将两个命令的输出按列合并，每列包含反向互补序列 + 制表符 + 原始序列  
@@ -483,7 +513,8 @@ fi
 • `$F[0] ne $F[1]`: ne 为perl中的不等运算符  
 • `$.`表示当前行号  
 • 退出状态码1表示失败，0表示成功，`eof`判断是否到达文件末尾  
-```
+
+```bash
 cd $HOME/faops/test
 paste \
   <(faops rc -l 0 ufasta.fa stdout | grep -v '^>') \
@@ -504,8 +535,10 @@ else
     echo "Perl reverse complement algorithm verification failed"
 fi
 ```
+
 ## bats代码⑤:
-```
+
+```bash
 @test "rc: with list.file" {
     exp=">RC_read47"
     res=$($BATS_TEST_DIRNAME/../faops rc -l 0 -f <(echo read47) $BATS_TEST_DIRNAME/ufasta.fa stdout | grep '^>RC_')
@@ -513,10 +546,13 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑤:
+
 利用列表文件对指定序列进行反向互补操作  
 • `-f <(echo read47)`只处理序列“read47”
-```
+
+```bash
 cd $HOME/faops/test
 exp=">RC_read47"    
 res=$(faops rc -l 0 -f <(echo read47) ufasta.fa stdout | grep '^>RC_')
@@ -526,19 +562,25 @@ else
    echo "Failed,exp:$exp;res:$res"
 fi
 ```
+
 # 06-one.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "one: inline names" {
     exp=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -A 1 '^>read12')
     res=$($BATS_TEST_DIRNAME/../faops one -l 0 $BATS_TEST_DIRNAME/ufasta.fa read12 stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 利用`faops one`提取单个指定序列  
 • `grep -A 1`可以显示匹配行及其后面一行内容
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter -l 0 ufasta.fa stdout | grep -A 1 '^>read12')    
 res=$(faops one -l 0 ufasta.fa read12 stdout)
@@ -548,8 +590,10 @@ else
    echo "Failed,exp:$exp;res:$res"
 fi
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "faSomeRecords: inline names" {
     if ! hash faSomeRecords 2>/dev/null ; then
         skip "Can't find faSomeRecords"
@@ -560,9 +604,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 借助faSomeRecords验证`faops one`是否正确提取单个指定序列，与①类似
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faSomeRecords 2>/dev/null ; then           
    echo "Can't find faSomeRecords"
@@ -576,19 +623,25 @@ res=$(faops one ufasta.fa read12 stdout | grep '^>')
    fi
 fi
 ```
+
 # 07-some.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "some: inline names" {
     exp=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -A 1 '^>read12')
     res=$($BATS_TEST_DIRNAME/../faops some -l 0 $BATS_TEST_DIRNAME/ufasta.fa <(echo read12) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 `faops some`可以用来提取多条指定序列  
 将`<(echo read12)`替换为`<(echo -e "read12\nread13")`可以提取多条序列  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops filter -l 0 ufasta.fa stdout | grep -A 1 '^>read12')    
 res=$(faops some -l 0 ufasta.fa <(echo read12) stdout)
@@ -598,8 +651,10 @@ else
    echo "Failed,exp：$exp;res:$res"      
 fi
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "faSomeRecords: inline names" {
     if ! hash faSomeRecords 2>/dev/null ; then
         skip "Can't find faSomeRecords"
@@ -610,9 +665,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 借助faSomeRecords验证`faops some`是否正确提取指定序列，与①类似  
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faSomeRecords 2>/dev/null ; then              
    echo "Can't find faSomeRecords"
@@ -626,8 +684,10 @@ res=$(faops some ufasta.fa <(echo read12) stdout | grep '^>')
    fi
 fi
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "faSomeRecords: exclude" {
     if ! hash faSomeRecords 2>/dev/null ; then
         skip "Can't find faSomeRecords"
@@ -638,9 +698,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 利用`faops some -i`可以排除指定序列，保留剩余序列
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faSomeRecords 2>/dev/null ; then              
    echo "Can't find faSomeRecords"
@@ -654,53 +717,69 @@ res=$(faops some -i ufasta.fa <(echo read12) stdout | grep '^>')
    fi
 fi
 ```
+
 # 08-filter.bats
+
 ## bats代码①:
-```
+
+```bash
 @test "filter: as formatter, sequence in one line" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | wc -l | xargs echo)
     assert_equal "$(( exp * 2 ))" "$res"
 }
 ```
+
 ## 可以运行的bash代码①:
+
 `faops filter -l 0`可以格式化序列，且每条序列在一行上  
 每个格式化后的序列占两行：1行头信息 + 1行序列数据  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa | wc -l | xargs echo)    
 res=$(faops filter -l 0 ufasta.fa stdout | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码②:
-```
+
+```bash
 @test "filter: as formatter, blocked fasta files" {
     exp=$($BATS_TEST_DIRNAME/../faops size $BATS_TEST_DIRNAME/ufasta.fa | wc -l | xargs echo)
     res=$($BATS_TEST_DIRNAME/../faops filter -b $BATS_TEST_DIRNAME/ufasta.fa stdout | wc -l | xargs echo)
     assert_equal "$(( exp * 3 ))" "$res"
 }
 ```
+
 ## 可以运行的bash代码②:
+
 `faops filter -b`可以生成分块格式化的fa文件，后每条序列占3行，序列后面有一行空行  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(faops size ufasta.fa | wc -l | xargs echo)    
 res=$(faops filter -b ufasta.fa stdout | wc -l | xargs echo)
 echo "exp:$exp"
 echo "res:$res"
 ```
+
 ## bats代码③:
-```
+
+```bash
 @test "filter: as formatter, identical headers" {
     exp=$(grep '^>' $BATS_TEST_DIRNAME/ufasta.fa)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep '^>')
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码③:
+
 使用`faops filter`格式化序列后描述行信息不变  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(grep '^>' ufasta.fa)    
 res=$(faops filter -l 0 ufasta.fa stdout | grep '^>')
@@ -710,20 +789,25 @@ else
    echo "The description line information changes after formatting the sequence"         
 fi
 ```
+
 ## bats代码④:
-```
+
+```bash
 @test "filter: as formatter, identical sequences" {
     exp=$(grep -v '^>' $BATS_TEST_DIRNAME/ufasta.fa | perl -ne 'chomp; print')
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep -v '^>' | perl -ne 'chomp; print')
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码④:
+
 使用`faops filter`格式化序列后序列信息不变  
 • `chomp`：移除每行的换行符  
 • `print`：连续打印（不移除序列字符间的换行）  
 • 可以去除描述行，将所有序列数据连接成一个长字符串  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(grep -v '^>' ufasta.fa | perl -ne 'chomp; print')    
 res=$(faops filter -l 0 ufasta.fa stdout | grep -v '^>' | perl -ne 'chomp; print')
@@ -733,17 +817,22 @@ else
    echo "The sequence information changes after formatting the sequence"         
 fi
 ```
+
 ## bats代码⑤:
-```
+
+```bash
 @test "filter: as formatter, identical sequences (gz)" {
     exp=$(grep -v '^>' $BATS_TEST_DIRNAME/ufasta.fa | perl -ne 'chomp; print')
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 $BATS_TEST_DIRNAME/ufasta.fa.gz stdout | grep -v '^>' | perl -ne 'chomp; print')
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑤:
+
 使用`faops filter`格式化 fa.gz 压缩文件的序列后序列信息不变  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(grep -v '^>' ufasta.fa | perl -ne 'chomp; print')    
 res=$(faops filter -l 0 ufasta.fa.gz stdout | grep -v '^>' | perl -ne 'chomp; print')
@@ -753,17 +842,22 @@ else
    echo "The sequence information changes after formatting the sequence"         
 fi
 ```
+
 ## bats代码⑥:
-```
+
+```bash
 @test "filter: as formatter, identical sequences (gz) with -N" {
     exp=$(grep -v '^>' $BATS_TEST_DIRNAME/ufasta.fa | perl -ne 'chomp; print')
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 -N $BATS_TEST_DIRNAME/ufasta.fa.gz stdout | grep -v '^>' | perl -ne 'chomp; print')
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑥:
+
 `faops filter -l 0 -N`中的`-N`参数可以将所有IUPAC模糊碱基代码（如M、R、S、W、Y、K等）转换为标准的N，保持A、G、C、T不变  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(grep -v '^>' ufasta.fa | perl -ne 'chomp; print')    
 res=$(faops filter -l 0 -N ufasta.fa.gz stdout | grep -v '^>' | perl -ne 'chomp; print')
@@ -773,19 +867,24 @@ else
    echo "The sequence information changes after formatting the sequence"         
 fi
 ```
+
 ## bats代码⑦:
-```
+
+```bash
 @test "filter: convert IUPAC to N" {
     exp=$(printf ">read\n%s\n" ANNG)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 -N <(printf ">read\n%s\n" AMRG) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑦:
+
 利用`faops filter -l 0 -N`的`-N`参数将所有IUPAC模糊碱基代码（M、R）转换为标准的N  
 M=A/C;R=A/G  
 `<()`可以创建一个临时文件，并传递给 faops 执行，执行完自动删除  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(printf ">read\n%s\n" ANNG)
 res=$(faops filter -l 0 -N <(printf ">read\n%s\n" AMRG) stdout)
@@ -795,17 +894,22 @@ else
    echo "Failed"         
 fi
 ```
+
 ## bats代码⑧:
-```
+
+```bash
 @test "filter: remove dashes" {
     exp=$(printf ">read\n%s\n" ARG)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 -d <(printf ">read\n%s\n" A-RG) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑧:
+
 `faops filter -l 0 -d`的`-d`参数可以用来删除序列中的破折号（-）  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(printf ">read\n%s\n" ARG)
 res=$(faops filter -l 0 -d <(printf ">read\n%s\n" A-RG) stdout)
@@ -815,17 +919,22 @@ else
    echo "Failed"         
 fi
 ```
+
 ## bats代码⑨:
-```
+
+```bash
 @test "filter: Upper cases" {
     exp=$(printf ">read\n%s\n" ATCG)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 -U <(printf ">read\n%s\n" AtcG) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑨:
+
 `faops filter -l 0 -U`的`-U`参数可以将序列中的小写字母转换为大写字母  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(printf ">read\n%s\n" ATCG)    
 res=$(faops filter -l 0 -U <(printf ">read\n%s\n" AtcG) stdout)
@@ -835,53 +944,67 @@ else
    echo "Failed"         
 fi
 ```
+
 ## bats代码⑩:
-```
+
+```bash
 @test "filter: simplify seq names" {
     exp=$(printf ">read\n%s\n" ANNG)
     res=$($BATS_TEST_DIRNAME/../faops filter -l 0 -s <(printf ">read.1\n%s\n" ANNG) stdout)
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码⑩:
+
 `faops filter -l 0 -s`的`-s`参数可以简化 FASTA 文件的描述行，移除序列名称中的后缀和额外描述  
-```
+
+```bash
 cd $HOME/faops/test
 exp=$(printf ">read\n%s\n" ANNG)    
 res=$(faops filter -l 0 -s <(printf ">read.1\n%s\n" ANNG) stdout)
 echo "exp:$exp; res:$res"
 ```
+
 ## bats代码11:
-```
+
+```bash
 @test "filter: fastq to fasta" {
     run $BATS_TEST_DIRNAME/../faops filter $BATS_TEST_DIRNAME/test.seq stdout
     run bash -c "echo \"${output}\" | wc -l | xargs echo "
     assert_equal 6 "${output}"
 }
 ```
+
 ## 可以运行的bash代码11:
+
 利用`faops filter`可以将 fastq 格式文件转换为 fasta 格式文件  
-```
+
+```bash
 cd $HOME/faops/test
 res=$(faops filter test.seq stdout | wc -l | xargs echo)
 echo "res:$res"
 ```
+
 ## bats代码12:
-```
+
+```bash
 @test "faFilter: minSize" {
     if ! hash faFilter 2>/dev/null ; then
         skip "Can't find faFilter"
     fi
-
     exp=$(faFilter -minSize=10 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep '^>')
     res=$($BATS_TEST_DIRNAME/../faops filter -a 10 $BATS_TEST_DIRNAME/ufasta.fa stdout | grep '^>')
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码12:
+
 利用`faops filter -a 10`可以过滤出长度≥10的序列  
 • `-a`：最小序列长度阈值  
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faFilter 2>/dev/null ; then                 
    echo "Can't find faFilter"
@@ -895,8 +1018,10 @@ res=$(faops filter -a 10 ufasta.fa stdout | grep '^>')
    fi
 fi
 ```
+
 ## bats代码13:
-```
+
+```bash
 @test "faFilter: maxSize" {
     if ! hash faFilter 2>/dev/null ; then
         skip "Can't find faFilter"
@@ -907,10 +1032,13 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码13:
+
 利用`faops filter -z 50`可以过滤出长度≤50的序列  
 • `-z`：最大序列长度阈值
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faFilter 2>/dev/null ; then                    
    echo "Can't find faFilter"
@@ -924,8 +1052,10 @@ res=$(faops filter -a 1 -z 50 ufasta.fa stdout | grep '^>')
    fi
 fi
 ```
+
 ## bats代码14:
-```
+
+```bash
 @test "faFilter: minSize maxSize" {
     if ! hash faFilter 2>/dev/null ; then
         skip "Can't find faFilter"
@@ -936,9 +1066,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码14:
+
 利用`faops filter -a 10 -z 50`可以过滤出长度在10和50之间的序列  
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faFilter 2>/dev/null ; then                    
    echo "Can't find faFilter"
@@ -952,8 +1085,10 @@ res=$(faops filter -a 10 -z 50 ufasta.fa stdout | grep '^>')
    fi
 fi
 ```
+
 ## bats代码15:
-```
+
+```bash
 @test "faFilter: uniq" {
     if ! hash faFilter 2>/dev/null ; then
         skip "Can't find faFilter"
@@ -964,9 +1099,12 @@ fi
     assert_equal "$exp" "$res"
 }
 ```
+
 ## 可以运行的bash代码15:
+
 利用`faops filter -u`可以去除序列中的重复序列  
-```
+
+```bash
 cd $HOME/faops/test
 if ! hash faFilter 2>/dev/null ; then                    
    echo "Can't find faFilter"
@@ -980,6 +1118,7 @@ res=$(faops filter -u -a 1 <(cat ufasta.fa ufasta.fa) stdout | grep '^>')
    fi
 fi
 ```
+
 # 09-split-name.bats  
 ## bats代码①:
 ```
