@@ -1841,12 +1841,15 @@ echo "res:$res"
 ## 可以运行的bash代码②:
 
 `faops interleave`可以交错合并两个文件，当只有一个文件时，会输出N  
-输出为：  
+输出为： 
+
+```
 >read1/1  
 序列信息  
 >read1/2  
->N  
+N  
 ......  
+```
 
 ```bash
 cd $HOME/faops/test
@@ -1873,11 +1876,15 @@ echo "res:$res"
 
 利用`faops interleave -q`交错合并两个 fastq 文件  
 输出为：  
+
+```
 @read1/1  
 序列及质量信息  
 @read1/2  
 序列及质量信息  
 ......  
+```
+
 合并后不会产生无效的质量值，即包含单个感叹号 ! 的行  
 
 ```bash
@@ -1902,11 +1909,14 @@ faops interleave -q R1.fq.gz R2.fq.gz | grep '^!$' | wc -l
 
 利用`faops interleave -q`交错合并两个 fastq 文件,当只有一个文件时,系列质量会输出 !  
 输出为：  
+
+```
 @read1/1  
 序列及质量信息  
 @read1/2  
 N及!  
 ......  
+```
 
 ```bash
 cd $HOME/faops/test
@@ -1932,11 +1942,14 @@ faops interleave -q R1.fq.gz | grep '^!$' | wc -l
 read0:1-10  
 read12:50-60  
 利用`faops region -l 0`可以提取 read0 的第 1-10 个碱基、read12 的第 50-60 个碱基  
-输出为  
+输出为:  
+
+```
 >read0:1-10  
 tCGTTTAACC  
 >read12:50-60  
 TtgTgtcACag  
+```
 
 ```bash
 cd $HOME/faops/test
@@ -2003,9 +2016,11 @@ echo "res:$res"
 ## 可以运行的bash代码④:
 
 利用`faops region -s -l 0`可以提取一条序列的指定位置的碱基，`-s`启用链向处理，提取正链序列  
-输出为  
+输出为:  
+```
 >read0(+):10  
 C  
+```
 
 ```bash
 cd $HOME/faops/test
@@ -2028,11 +2043,14 @@ echo "res:$res"
 ## 可以运行的bash代码④:
 
 利用`faops region -l 0`可以同时提取一条序列的不同位置的碱基  
-输出为  
+输出为:  
+
+```
 >read1:1-10  
 taGGCGcGGg  
 >read1:50-60  
 TacgtaACatc  
+```
 
 ```bash
 cd $HOME/faops/test
